@@ -7,4 +7,6 @@ To run on your device:
 
 2) run the command "pod install".
 
-3) Build the project using XCode.
+3) Open the file .xcworkspace
+
+3) Build the project using XCode(make sure your device is connected to your computer)
