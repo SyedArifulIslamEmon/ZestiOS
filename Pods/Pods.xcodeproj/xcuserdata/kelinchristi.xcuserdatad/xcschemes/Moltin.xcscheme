@@ -14,7 +14,7 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = 'primary'
-               BlueprintIdentifier = 'B2EAB16A28AD8721D10475B8'
+               BlueprintIdentifier = 'E728B09857CB6E0C27C43AF9'
                BlueprintName = 'Moltin'
                ReferencedContainer = 'container:Pods.xcodeproj'
                BuildableName = 'Moltin.framework'>

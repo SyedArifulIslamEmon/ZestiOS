@@ -5,6 +5,7 @@ pod 'SwiftSpinner'
 pod 'SDWebImage', '~>3.7'
 pod 'HexColors'
 pod 'UberRides'
+pod 'Firebase'
 
 
 use_frameworks!

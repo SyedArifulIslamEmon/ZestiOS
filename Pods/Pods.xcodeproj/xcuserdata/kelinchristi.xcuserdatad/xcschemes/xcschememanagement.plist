@@ -9,6 +9,11 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>Firebase.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>HexColors.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -42,17 +47,17 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
+		<key>1EC23719DD7C8884B3E5DF1C0CE5BF8F</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>40DDB8CFD5E0489EF552021DF0B1657E</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>4878C70B21CA37D7CB8A476BF986741B</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>4F6F4474D17770D7BB22A5D86518B4EE</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>54ED32C539BA809ECD0E73456160870E</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -62,7 +67,12 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>B11DB16A33C098AFAA1202F73B84CCD9</key>
+		<key>8FE16848DBB151263B4EBFC0206C3699</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>B7AC9326D819482593FE118E915409D7</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -72,7 +82,7 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>F54FC0279D1DD7A0168A80C4FC9E3DA5</key>
+		<key>D6EA4748C8C0BD73A696B938A60A3C3B</key>
 		<dict>
 			<key>primary</key>
 			<true/>
