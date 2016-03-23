@@ -6,14 +6,15 @@
 //  Copyright (c) 2016 Kelz All rights reserved.
 //
 
+import Foundation
 import UIKit
 import Moltin
 import UberRides
-//import HexColors
-
 import HexColors
 
 // Declare some global constants to make them easily accessible in other classes.
+
+let BASE_URL = "https://zest-kelin-christi.firebaseio.com"
 
 let MOLTIN_STORE_ID = "aqA2mV2YKWpmu4daVS7Fh2WbWLH0xe1f2i9hHrkR"
 
@@ -36,6 +37,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
         // Set the window's tint color to the Moltin color
         RidesClient.sharedInstance.configureClientID("Wzsftom7_G7l18wTT-asWUDzsyR3IlkG")
+        
         self.window?.tintColor = MOLTIN_COLOR
         
         // Initialise the Moltin SDK with our store ID.

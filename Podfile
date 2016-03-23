@@ -5,7 +5,10 @@ pod 'SwiftSpinner'
 pod 'SDWebImage', '~>3.7'
 pod 'HexColors'
 pod 'UberRides'
-pod 'Firebase'
+pod 'Firebase', '>= 2.5.0'
+pod 'AZDropdownMenu', '>= 1.1.0'
+pod 'Eureka', '~> 1.3'
+pod "DGElasticPullToRefresh"
 
 
 use_frameworks!

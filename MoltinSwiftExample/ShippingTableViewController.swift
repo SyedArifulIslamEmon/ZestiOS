@@ -14,7 +14,7 @@ class ShippingTableViewController: UITableViewController {
     
     private let SHIPPING_CELL_REUSE_IDENTIFIER = "shippingMethodCell"
     private let PAYMENT_SEGUE = "paymentSegue"
-
+    
     private var shippingMethods:NSArray?
     
     // It needs some pass-through variables too...
@@ -24,15 +24,15 @@ class ShippingTableViewController: UITableViewController {
     
     private var selectedShippingMethodSlug = ""
     
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         
         if (shippingMethods == nil) {
             // get shipping methods for the shipping address we've been passed...
             SwiftSpinner.show("Loading Shipping Methods")
-
+            
             
             Moltin.sharedInstance().cart.checkoutWithsuccess({ (response) -> Void in
                 // Success - let's extract shipping methods...
@@ -44,25 +44,25 @@ class ShippingTableViewController: UITableViewController {
                 
                 self.tableView.reloadData()
                 
-            }, failure: { (response, error) -> Void in
-                // Something went wrong - let's warn the user...
+                }, failure: { (response, error) -> Void in
+                    // Something went wrong - let's warn the user...
             })
             
         }
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-
+    
     // MARK: - Table view data source
-
+    
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         // Return the number of sections.
         return 1
     }
-
+    
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // Return the number of rows in the section.
         
@@ -72,15 +72,15 @@ class ShippingTableViewController: UITableViewController {
         
         return 0
     }
-
+    
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier(SHIPPING_CELL_REUSE_IDENTIFIER, forIndexPath: indexPath) as! ShippingMethodTableViewCell
-
+        
         // Configure the cell...
         let shippingMethod = shippingMethods?.objectAtIndex(indexPath.row) as! NSDictionary
         cell.methodNameLabel?.text = (shippingMethod.valueForKey("title") as! String)
         cell.costLabel?.text = (shippingMethod.valueForKeyPath("price.data.formatted.with_tax") as! String)
-
+        
         return cell
     }
     
@@ -92,9 +92,9 @@ class ShippingTableViewController: UITableViewController {
         // Continue!
         performSegueWithIdentifier(PAYMENT_SEGUE, sender: self)
     }
-
+    
     // MARK: - Navigation
-
+    
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         // Get the new view controller using [segue destinationViewController].
@@ -109,5 +109,6 @@ class ShippingTableViewController: UITableViewController {
         }
         
     }
-
+    
 }
+

@@ -12,8 +12,6 @@ import SwiftSpinner
 
 class AddressEntryTableViewController: UITableViewController, UIPickerViewDelegate, UIPickerViewDataSource, SwitchTableViewCellDelegate, TextEntryTableViewCellDelegate {
     
-    private let PAYMENT_SEGUE = "paymentSegue"
-
     var emailAddress:String?
     var billingDictionary:Dictionary<String, String>?
     var shippingDictionary:Dictionary<String, String>?
@@ -45,7 +43,7 @@ class AddressEntryTableViewController: UITableViewController, UIPickerViewDelega
     private let BILLING_ADDRESS_SHIPPING_SEGUE = "billingShippingSegue"
     private let SHIPPING_ADDRESS_SHIPPING_SEGUE = "shippingShippingSegue"
     private let SHIPPING_ADDRESS_SEGUE = "shippingAddressSegue"
-
+    
     
     //MARK: - View loading
     override func viewDidLoad() {
@@ -56,16 +54,16 @@ class AddressEntryTableViewController: UITableViewController, UIPickerViewDelega
         if !isShippingAddress {
             // Set-up extra billing address fields...
             fields = [contactEmailFieldIdentifier, contactFirstNameFieldIdentifier, contactLastNameFieldIdentifier, address1FieldIdentifier, address2FieldIdentifier, cityFieldIdentifier, stateFieldIdentifier, countryFieldIdentifier, postcodeFieldIdentifier]
-
+            
             billingDictionary = Dictionary<String, String>()
             
             self.title = "Billing Address"
-
+            
         } else {
             shippingDictionary = Dictionary<String, String>()
             
             self.title = "Shipping Address"
-
+            
         }
         
         for field in fields {
@@ -107,12 +105,12 @@ class AddressEntryTableViewController: UITableViewController, UIPickerViewDelega
                 
                 // and hide loading UI.
                 SwiftSpinner.hide()
-
+                
                 
                 }, failure: { (response, error) -> Void in
                     // Something went wrong, alert user.
                     SwiftSpinner.hide()
-
+                    
                     AlertDialog.showAlert("Error", message: "Sorry, could not load countries", viewController: self)
                     print("Something went wrong...")
                     print(error)
@@ -123,12 +121,12 @@ class AddressEntryTableViewController: UITableViewController, UIPickerViewDelega
         countryPickerView.dataSource = self
         countryPickerView.backgroundColor = UIColor.whiteColor()
         countryPickerView.opaque = true
-
+        
         // Load table data
         self.tableView.reloadData()
         
     }
-
+    
     // MARK: - Table view data source
     
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
@@ -152,7 +150,7 @@ class AddressEntryTableViewController: UITableViewController, UIPickerViewDelega
             // Show Continue button cell!
             let cell = tableView.dequeueReusableCellWithIdentifier(CONTINUE_BUTTON_CELL_IDENTIFIER, forIndexPath: indexPath) as! ContinueButtonTableViewCell
             return cell
-
+            
         }
         
         if (indexPath.row == contactFieldsArray.count && !isShippingAddress) {
@@ -193,7 +191,7 @@ class AddressEntryTableViewController: UITableViewController, UIPickerViewDelega
                 cell.textField?.text = existingEntry
             }
         }
-
+        
         
         
         return cell
@@ -208,7 +206,7 @@ class AddressEntryTableViewController: UITableViewController, UIPickerViewDelega
             continueButtonTapped()
             return
         }
-
+        
     }
     
     //MARK: - Country picker delegate and data source
@@ -217,13 +215,13 @@ class AddressEntryTableViewController: UITableViewController, UIPickerViewDelega
     }
     
     func pickerView(pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-
+        
         
         return countryArray!.count
     }
     
     func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-
+        
         return countryArray![row]["name"]
     }
     
@@ -301,7 +299,7 @@ class AddressEntryTableViewController: UITableViewController, UIPickerViewDelega
     }
     
     // MARK: - Data processing
-
+    
     // A function that gets all of the address field values and returns a billing or shipping address dictionary suitable to pass to the Moltin API.
     func getAddressDict() -> Dictionary<String, String> {
         var sourceDict:Dictionary<String, String>
@@ -328,21 +326,21 @@ class AddressEntryTableViewController: UITableViewController, UIPickerViewDelega
         if (formattedDict[address2FieldIdentifier] != nil) {
             // There's a value in address 2
             address2 = formattedDict[address2FieldIdentifier]!
-
+            
         }
         
         // Add on city
         address2 = address2 +  ", " + sourceDict[cityFieldIdentifier]!
-            
+        
         // Add on state
         address2 = address2 + ", " +  sourceDict[stateFieldIdentifier]!
-
+        
         
         formattedDict[countryFieldIdentifier] = country
         formattedDict[postcodeFieldIdentifier] = sourceDict[postcodeFieldIdentifier]
         
         return formattedDict
-
+        
     }
     
     //MARK: - Text field Cell Delegate
@@ -370,32 +368,31 @@ class AddressEntryTableViewController: UITableViewController, UIPickerViewDelega
     
     //MARK: - Continue Button
     private func continueButtonTapped() {
-        
-        performSegueWithIdentifier("paymentSegue", sender: self)
         // If this is the billing address screen, see if the user wants to enter a seperate shipping address...
         // If they do, transition to the shipping address entry screen
         // If they don't - or this is the shipping address screen - carry on with the order...
         
+        
         // First, check the data entered is valid - if it isn't don't bother.
-//        if !validateData() {
-//            return
-//        }
-
-//        if isShippingAddress {
-//            performSegueWithIdentifier(SHIPPING_ADDRESS_SHIPPING_SEGUE, sender: self)
-//        } else {
-//            if useSameShippingAddress {
-//                // They wanna use the current billing address as the shipping address too, so we need to segue to the shipping method choice view, since we know all details now.
-//                performSegueWithIdentifier(BILLING_ADDRESS_SHIPPING_SEGUE, sender: self)
-//            } else {
-//                performSegueWithIdentifier(SHIPPING_ADDRESS_SEGUE, sender: self)
-//
-//            }
-//            
-//        }
+        if !validateData() {
+            return
+        }
+        
+        if isShippingAddress {
+            performSegueWithIdentifier(SHIPPING_ADDRESS_SHIPPING_SEGUE, sender: self)
+        } else {
+            if useSameShippingAddress {
+                // They wanna use the current billing address as the shipping address too, so we need to segue to the shipping method choice view, since we know all details now.
+                performSegueWithIdentifier(BILLING_ADDRESS_SHIPPING_SEGUE, sender: self)
+            } else {
+                performSegueWithIdentifier(SHIPPING_ADDRESS_SEGUE, sender: self)
+                
+            }
+            
+        }
         
         
-
+        
     }
     
     
@@ -418,13 +415,13 @@ class AddressEntryTableViewController: UITableViewController, UIPickerViewDelega
         } else {
             billingDict = getAddressDict()
             
-
+            
         }
         
         if useSameShippingAddress {
             shippingDict = billingDict
         }
-
+        
         
         if segue.identifier == SHIPPING_ADDRESS_SHIPPING_SEGUE || segue.identifier == BILLING_ADDRESS_SHIPPING_SEGUE {
             // Set up the shipping address view's address variables...

@@ -28,8 +28,6 @@ class ProductDetailViewController: UIViewController, MKMapViewDelegate, CLLocati
     
     @IBOutlet weak var addressLabel: UILabel!
     
-    
-    
     @IBOutlet weak var phoneLabel: UILabel!
     
     @IBOutlet weak var qtyLabel: UILabel!
@@ -37,7 +35,6 @@ class ProductDetailViewController: UIViewController, MKMapViewDelegate, CLLocati
     @IBOutlet weak var mapView: MKMapView!
     
     let locationManager = CLLocationManager()
-    
     var coordinate: CLLocationCoordinate2D!
     
     override func viewDidLoad() {
@@ -76,8 +73,6 @@ class ProductDetailViewController: UIViewController, MKMapViewDelegate, CLLocati
         if let address = productDict!.valueForKey("address")as? String {
             self.addressLabel?.text = address
             
-            //Geocoding function (forward)
-            //completion handlers return an array of placemarkers
             func forwardGeocoding(address: String) {
                 CLGeocoder().geocodeAddressString(address , completionHandler: { (placemarks, error) in
                     if error != nil {
@@ -91,19 +86,70 @@ class ProductDetailViewController: UIViewController, MKMapViewDelegate, CLLocati
                         let placemark = placemarks?[0]
                         let location = placemark?.location
                         self.coordinate = location?.coordinate
-                        print("lat: \(self.coordinate!.latitude), long: \(self.coordinate!.longitude)")
+//                        print("lat: \(self.coordinate!.latitude), long: \(self.coordinate!.longitude)")
                         
                         //Declared a constant that is able to leverage the CLLocationCoordinate2D to get the latitude and longitude co-ordinates
                         //Declared another constant that instantiated the MKPointAnnotation that is responsible for the pin
-                        let destination : CLLocationCoordinate2D = CLLocationCoordinate2DMake(self.coordinate!.latitude, self.coordinate!.longitude)
+//                        let dest : CLLocationCoordinate2D = CLLocationCoordinate2DMake(self.coordinate!.latitude, self.coordinate!.longitude)
+                        
+                        
+                        //////////////////////////
+                        //////////////////////////
+                        // 1.
+                        self.mapView.delegate = self
+                        
+                        // 2.
+                        let destinationLocation = CLLocationCoordinate2D(latitude: self.coordinate!.latitude, longitude: self.coordinate.longitude)
+//                        let sourceLocation = CLLocationCoordinate2D(latitude: location!.coordinate.latitude, longitude: location!.coordinate.longitude)
+//                        print("latitude: \(location!.coordinate.latitude), longitude: \(location!.coordinate.longitude)")
+//                        let sourceLocation = CLLocationCoordinate2D(latitude: 47.619493, longitude: -122.196260)
+                        
+                        // 3.
+//                        let sourcePlacemark = MKPlacemark(coordinate: sourceLocation, addressDictionary: nil)
+                        let destinationPlacemark = MKPlacemark(coordinate: destinationLocation, addressDictionary: nil)
+                        
+                        // 4.
+//                        let sourceMapItem = MKMapItem(placemark: sourcePlacemark)
+                        let destinationMapItem = MKMapItem(placemark: destinationPlacemark)
+                        
+                        // 7.
+                        let directionRequest = MKDirectionsRequest()
+                        directionRequest.source = MKMapItem.mapItemForCurrentLocation()
+                        directionRequest.destination = destinationMapItem
+                        directionRequest.transportType = .Automobile
+                        
+                        // Calculate the direction
+                        let directions = MKDirections(request: directionRequest)
+                        
+                        // 8.
+                        directions.calculateDirectionsWithCompletionHandler {
+                            (response, error) -> Void in
+                            
+                            guard let response = response else {
+                                if let error = error {
+                                    print("Error: \(error)")
+                                }
+                                
+                                return
+                            }
+                            
+                            let route = response.routes[0]
+                            self.mapView.addOverlay((route.polyline), level: MKOverlayLevel.AboveRoads)
+                            
+                            let rect = route.polyline.boundingMapRect
+                            self.mapView.setRegion(MKCoordinateRegionForMapRect(rect), animated: true)
+                        }
+                        
+                        
                         let restaurantPin = MKPointAnnotation()
-                        restaurantPin.coordinate = destination
+                        restaurantPin.coordinate = destinationLocation
                         self.mapView.addAnnotation(restaurantPin)
                         
                         // Do any additional setup after loading the view, typically from a nib.
                     }
                     
                 })
+                
             }
             
             //Address to co-ordinates
@@ -138,27 +184,6 @@ class ProductDetailViewController: UIViewController, MKMapViewDelegate, CLLocati
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
-    }
-    
-    // MARK: - Location Delegate Methods
-    
-    func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        
-        //getting last location
-        let location = locations.last
-        
-        //getting the center of the location
-        let center = CLLocationCoordinate2D(latitude: location!.coordinate.latitude, longitude: location!.coordinate.longitude)
-        
-        //zoom range
-        let region = MKCoordinateRegion(center: center, span: MKCoordinateSpan(latitudeDelta: 0.08, longitudeDelta: 0.08))
-        
-        //animation
-        self.mapView.setRegion(region, animated: true)
-        
-        //since we have a zoomed view, we stop updating the location
-        self.locationManager.stopUpdatingLocation()
-        
     }
     
     @IBAction func buyProduct(sender: AnyObject) {
@@ -200,14 +225,23 @@ class ProductDetailViewController: UIViewController, MKMapViewDelegate, CLLocati
         
     }
     
+    func mapView(mapView: MKMapView, rendererForOverlay overlay: MKOverlay) -> MKOverlayRenderer {
+        let renderer = MKPolylineRenderer(overlay: overlay)
+        renderer.strokeColor = MOLTIN_COLOR
+        renderer.lineWidth = 2.0
+        
+        return renderer
+    }
+    
     
     func checkout() {
         
         //Create the order data(hard coded for now)
         let orderParameters = [
-            "customer": ["first_name": "Jon",
-                "last_name":  "Doe",
-                "email":      "jondoe@gmail.com"],
+            "customer": ["first_name": "Kelin",
+                "last_name":  "Christi",
+                "email":      "kelin@kelin.com"],
+                "shipping": "free_shipping",
                 "gateway": "stripe",
             "bill_to": ["first_name": "Generic",
                 "last_name":  "Generic",
@@ -276,3 +310,4 @@ class ProductDetailViewController: UIViewController, MKMapViewDelegate, CLLocati
     }
 
 }
+

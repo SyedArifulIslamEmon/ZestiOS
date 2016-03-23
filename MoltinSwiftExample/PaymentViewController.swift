@@ -13,7 +13,7 @@ import SwiftSpinner
 class PaymentViewController: UITableViewController, TextEntryTableViewCellDelegate, UIPickerViewDataSource, UIPickerViewDelegate {
     
     // Replace this constant with your store's payment gateway slug
-    private let PAYMENT_GATEWAY = "stripe"
+    private let PAYMENT_GATEWAY = "dummy"
     
     private let PAYMENT_METHOD = "purchase"
     
@@ -43,7 +43,7 @@ class PaymentViewController: UITableViewController, TextEntryTableViewCellDelega
     let MAX_CARD_LENGTH = 19
     
     
-    override func viewDidLoad() {        
+    override func viewDidLoad() {
         super.viewDidLoad()
         
         datePicker.delegate = self
@@ -61,14 +61,14 @@ class PaymentViewController: UITableViewController, TextEntryTableViewCellDelega
         let currentYear = components.year
         let currentShortYear = (NSString(format: "%d", currentYear).substringFromIndex(2) as NSString)
         selectedYear = String(format: "%d", currentYear)
-
+        
         let shortYearNumber = currentShortYear.intValue
         let maxYear = shortYearNumber + 5
         for i in shortYearNumber...maxYear {
             let shortYear = NSString(format: "%d", i)
             yearsArray.append(shortYear as String)
         }
-             
+        
     }
     
     private func jumpToCartView(presentSuccess: Bool) {
@@ -78,7 +78,7 @@ class PaymentViewController: UITableViewController, TextEntryTableViewCellDelega
                 
                 if presentSuccess {
                     AlertDialog.showAlert("Order Successful", message: "Your order has been succesful, congratulations", viewController: controller )
-
+                    
                 }
             }
         }
@@ -107,7 +107,7 @@ class PaymentViewController: UITableViewController, TextEntryTableViewCellDelega
             
             return cell
         }
-    
+        
         let cell = tableView.dequeueReusableCellWithIdentifier(TEXT_ENTRY_CELL_REUSE_IDENTIFIER, forIndexPath: indexPath) as! TextEntryTableViewCell
         
         // Configure the cell...
@@ -127,7 +127,7 @@ class PaymentViewController: UITableViewController, TextEntryTableViewCellDelega
             cell.textField?.placeholder = "Expiry date"
             cell.textField?.inputView = datePicker
             cell.textField?.setDoneInputAccessoryView()
-
+            
             cell.cellId = "expiryDate"
             
             if (selectedYear != nil) && (selectedMonth != nil) {
@@ -233,7 +233,7 @@ class PaymentViewController: UITableViewController, TextEntryTableViewCellDelega
         // Check card number is all numeric, and < max length but also > min length
         if cardNumber == nil || !cardNumber!.isNumericString() || (cardNumber!).characters.count > MAX_CARD_LENGTH || (cardNumber!).characters.count < MIN_CARD_LENGTH {
             AlertDialog.showAlert("Invalid Card Number", message: "Please check the card number you entered and try again.", viewController: self)
-
+            
             return false
         }
         
@@ -266,7 +266,7 @@ class PaymentViewController: UITableViewController, TextEntryTableViewCellDelega
             // Extract the Order ID so that it can be used in payment too...
             let orderId = (response as NSDictionary).valueForKeyPath("result.id") as! String
             print("Order ID: \(orderId)")
-
+            
             let paymentParameters = ["data": ["number": self.cardNumber!,
                 "expiry_month": self.selectedMonth!,
                 "expiry_year":  self.selectedYear!,
@@ -276,23 +276,23 @@ class PaymentViewController: UITableViewController, TextEntryTableViewCellDelega
             Moltin.sharedInstance().checkout.paymentWithMethod(self.PAYMENT_METHOD, order: orderId, parameters: paymentParameters, success: { (response) -> Void in
                 // Payment successful...
                 print("Payment successful: \(response)")
-            
+                
                 
                 SwiftSpinner.hide()
                 
                 self.jumpToCartView(true)
-
-
                 
-
+                
+                
+                
                 
                 }) { (response, error) -> Void in
                     // Payment error
                     print("Payment error: \(error)")
                     SwiftSpinner.hide()
                     AlertDialog.showAlert("Payment Failed", message: "Payment failed - please try again", viewController: self)
-
-
+                    
+                    
             }
             
             
@@ -302,7 +302,7 @@ class PaymentViewController: UITableViewController, TextEntryTableViewCellDelega
                 SwiftSpinner.hide()
                 
                 AlertDialog.showAlert("Order Failed", message: "Order failed - please try again", viewController: self)
-
+                
         }
         
         

@@ -9,6 +9,26 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>AZDropdownMenu-AZDropdownMenu.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>AZDropdownMenu.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>DGElasticPullToRefresh.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>Eureka.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>Firebase.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -47,12 +67,32 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>1EC23719DD7C8884B3E5DF1C0CE5BF8F</key>
+		<key>081A67E20EFAA0E2F7366DA7F47524EA</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>40DDB8CFD5E0489EF552021DF0B1657E</key>
+		<key>0D69847D9E31304D49F7C46C7217796C</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>115824B7CB2E76E5ACB836A251E79404</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>252FC2026226DD97E395E0E190BE3B22</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>336B93337DFC5EE58B564606FF93F15D</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>40F580A48FF2C38CCBC58A6B3C8F5505</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -62,12 +102,12 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>745ED4AAAE6B3BA93A08EEE1E24609E2</key>
+		<key>5D71132139A1E1855313CBD9F229AC7A</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>8FE16848DBB151263B4EBFC0206C3699</key>
+		<key>745ED4AAAE6B3BA93A08EEE1E24609E2</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -77,12 +117,12 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>C408D4E183A88B763793C217A66A1950</key>
+		<key>C13B6BDD0039852F71D3D690E7064DB7</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>D6EA4748C8C0BD73A696B938A60A3C3B</key>
+		<key>C408D4E183A88B763793C217A66A1950</key>
 		<dict>
 			<key>primary</key>
 			<true/>

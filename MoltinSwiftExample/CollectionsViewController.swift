@@ -9,9 +9,14 @@
 import UIKit
 import Moltin
 import SwiftSpinner
+import Firebase
+import AZDropdownMenu
+import Eureka
 
 
-class CollectionsViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+class CollectionsViewController: UIViewController{
+    
+    var rightMenu: AZDropdownMenu?
     
     @IBOutlet weak var tableView:UITableView?
     
@@ -27,6 +32,11 @@ class CollectionsViewController: UIViewController, UITableViewDataSource, UITabl
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        //AZDropdown
+        let rightButton = UIBarButtonItem(image: UIImage(named: "options"), style: .Plain, target: self, action: "showRightDropdown")
+        navigationItem.rightBarButtonItem = rightButton
+        rightMenu = buildDummyDefaultMenu()
+        
         // Do any additional setup after loading the view, typically from a nib.
         self.title = "Locales"
         
@@ -35,6 +45,7 @@ class CollectionsViewController: UIViewController, UITableViewDataSource, UITabl
         
         // Get collections, async
         Moltin.sharedInstance().collection.listingWithParameters(["status": NSNumber(int: 1), "limit": NSNumber(int: 20)], success: { (response) -> Void in
+            
             // We have collections - show them!
             SwiftSpinner.hide()
             
@@ -54,13 +65,91 @@ class CollectionsViewController: UIViewController, UITableViewDataSource, UITabl
         
     }
     
+    //Dropdown function.
+    func showRightDropdown() {
+        if (self.rightMenu?.isDescendantOfView(self.view) == true) {
+            self.rightMenu?.hideMenu()
+        } else {
+            self.rightMenu?.showMenuFromView(self.view)
+        }
+    }
     
-    // MARK: - TableView Data source & Delegate
+    // MARK: - Navigation
+    
+    // In a storyboard-based application, you will often want to do a little preparation before navigation
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        // Get the new view controller using [segue destinationViewController].
+        // Pass the selected object to the new view controller.
+        if segue.identifier == PRODUCTS_LIST_SEGUE_IDENTIFIER {
+            // Set up products list view!
+            let newViewController = segue.destinationViewController as! ProductListTableViewController
+            
+            newViewController.title = selectedCollectionDict!.valueForKey("title") as? String
+            newViewController.collectionId = selectedCollectionDict!.valueForKeyPath("id") as? String
+            
+        }
+        
+    }
+    
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
+    }
+    
+    //Firebase Function.
+    func logout() {
+        // unauth() is the logout method for the current user.
+        
+        DataService.dataService.CURRENT_USER_REF.unauth()
+        
+        // Remove the user's uid from storage.
+        NSUserDefaults.standardUserDefaults().setValue(nil, forKey: "uid")
+        
+        // Head back to Login!
+        
+        let loginViewController = self.storyboard!.instantiateViewControllerWithIdentifier("Login")
+        UIApplication.sharedApplication().keyWindow?.rootViewController = loginViewController
+    }
+
+}
+
+//
+class FieldRowCustomizationController : FormViewController {
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        form +++
+            Section(header: "Your Name", footer: "")
+            
+            <<< NameRow() {
+                $0.placeholder = "Name"
+                }
+                .cellSetup { cell, row in
+                    cell.imageView?.image = UIImage(named: "plus_image")
+                }
+            
+            +++ Section("Credit Card Number")
+            
+            <<< PhoneRow() { $0.placeholder = "eg: 4242424242424242" }
+            
+            +++ Section("Expiration Date")
+            <<< PhoneRow() { $0.placeholder = "Month: eg. 08" }
+            <<< PhoneRow() { $0.placeholder = "Year: eg. 2016" }
+            
+            +++ Section("CVV")
+            <<< PhoneRow() { $0.placeholder = "eg: 424" }
+    
+    }
+}
+
+
+//Table View source for CollectionsViewController
+extension CollectionsViewController: UITableViewDataSource{
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return 1
     }
-
+    
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if collections != nil {
             return collections!.count
@@ -83,13 +172,17 @@ class CollectionsViewController: UIViewController, UITableViewDataSource, UITabl
         return cell
     }
     
+}
+
+//TableView Delegate for CollectionsViewController
+extension CollectionsViewController: UITableViewDelegate{
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
         
         selectedCollectionDict = collections?.objectAtIndex(indexPath.row) as? NSDictionary
-
+        
         performSegueWithIdentifier(PRODUCTS_LIST_SEGUE_IDENTIFIER, sender: self)
-
+        
         
     }
     
@@ -108,29 +201,70 @@ class CollectionsViewController: UIViewController, UITableViewDataSource, UITabl
             }
     }
     
-    // MARK: - Navigation
+}
+
+//This is the extension of the UIViewController. and this is the code for instantiating the dropdown menu
+extension UIViewController {
     
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using [segue destinationViewController].
-        // Pass the selected object to the new view controller.
-        
-        if segue.identifier == PRODUCTS_LIST_SEGUE_IDENTIFIER {
-            // Set up products list view!
-            let newViewController = segue.destinationViewController as! ProductListTableViewController
+    //Creating Menu
+        private func buildDummyDefaultMenu() -> AZDropdownMenu {
             
-            newViewController.title = selectedCollectionDict!.valueForKey("title") as? String
-            newViewController.collectionId = selectedCollectionDict!.valueForKeyPath("id") as? String
+            let leftTitles = ["Your Receipts", "Profile"]
+            let menu = AZDropdownMenu(titles: leftTitles)
+
+            menu.itemFontSize = 16.0
+            menu.itemColor = UIColor.blackColor()
+            menu.shouldDismissMenuOnDrag = true
+            menu.menuSeparatorColor = UIColor.clearColor()
+            menu.itemAlignment = .Right
+            menu.itemFontColor = MOLTIN_COLOR!
+            menu.itemFontName = "Helvetica"
+            menu.cellTapHandler = { [weak self] (indexPath: NSIndexPath) -> Void in
+                //Code for the Receipts Tab
+                if indexPath.row == 0{
+                    let controller = UIViewController()
+                    controller.title = ("Your Receipts")
+                    controller.view.backgroundColor = UIColor.whiteColor()
+                    self?.navigationController!.pushViewController(controller, animated:true)
+                    
+                }
+                //Code for the Profile Tab
+                if indexPath.row == 1{
+                    let controller2 = FieldRowCustomizationController()
+                    controller2.title = ("Profile")
+                    controller2.view.backgroundColor = UIColor.blackColor()
+                    self?.navigationController!.pushViewController(controller2, animated:true)
+                    
+                    //Logout from firebase.
+                    let logoutButton = UIBarButtonItem(title: "Logout", style: UIBarButtonItemStyle.Plain, target: self, action: "logout")
+                    controller2.navigationItem.rightBarButtonItem = logoutButton
+                    
+                }
+                
+                
+//            self?.pushNewViewController(leftTitles[indexPath.row])
             
         }
         
+        return menu
     }
     
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+//    private func pushNewViewController(title: String) {
+//        let newController = UIViewController()
+//        newController.title = title
+//        newController.view.backgroundColor = UIColor.whiteColor()
+//        dispatch_async(dispatch_get_main_queue(), {
+//            self.showViewController(newController, sender: self)
+//        })
+//    }
+//    
+//    private func pushNewViewController(item:AZDropdownMenuItemData) {
+//        self.pushNewViewController(item.title)
+//    }
+    
+    func dismiss(){
+        self.dismissViewControllerAnimated(true, completion: nil)
     }
     
-
 }
 

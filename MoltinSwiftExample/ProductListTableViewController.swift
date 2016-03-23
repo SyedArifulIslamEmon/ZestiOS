@@ -9,6 +9,7 @@
 import UIKit
 import Moltin
 import SwiftSpinner
+import DGElasticPullToRefresh
 
 class ProductListTableViewController: UITableViewController {
     
@@ -34,13 +35,19 @@ class ProductListTableViewController: UITableViewController {
         super.viewDidLoad()
 
         loadProducts(true)
-        
     }
+    
+    deinit {
+        tableView.dg_removePullToRefresh()
+    }
+        
+    
     
     private func loadProducts(showLoadingAnimation: Bool){
         assert(collectionId != nil, "Collection ID is required!")
         
         // Load in the next set of products...
+        
         
         // Show loading if neccesary?
         if showLoadingAnimation {
@@ -49,6 +56,7 @@ class ProductListTableViewController: UITableViewController {
         
         
         Moltin.sharedInstance().product.listingWithParameters(["collection": collectionId!, "limit": NSNumber(integer: PAGINATION_LIMIT), "offset": paginationOffset], success: { (response) -> Void in
+            
             // Let's use this response!
             SwiftSpinner.hide()
             
@@ -75,6 +83,7 @@ class ProductListTableViewController: UITableViewController {
             }
             
             self.tableView.reloadData()
+            
             
         }) { (response, error) -> Void in
             // Something went wrong!
