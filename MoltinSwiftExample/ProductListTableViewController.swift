@@ -9,7 +9,6 @@
 import UIKit
 import Moltin
 import SwiftSpinner
-import DGElasticPullToRefresh
 
 class ProductListTableViewController: UITableViewController {
     
@@ -36,11 +35,6 @@ class ProductListTableViewController: UITableViewController {
 
         loadProducts(true)
     }
-    
-    deinit {
-        tableView.dg_removePullToRefresh()
-    }
-        
     
     
     private func loadProducts(showLoadingAnimation: Bool){
@@ -161,13 +155,13 @@ class ProductListTableViewController: UITableViewController {
         willDisplayCell cell: UITableViewCell,
         forRowAtIndexPath indexPath: NSIndexPath) {
             
-            if cell.respondsToSelector("setSeparatorInset:") {
+            if cell.respondsToSelector(Selector("setSeparatorInset:")) {
                 cell.separatorInset = UIEdgeInsetsZero
             }
-            if cell.respondsToSelector("setLayoutMargins:") {
+            if cell.respondsToSelector(Selector("setLayoutMargins:")) {
                 cell.layoutMargins = UIEdgeInsetsZero
             }
-            if cell.respondsToSelector("setPreservesSuperviewLayoutMargins:") {
+            if cell.respondsToSelector(Selector("setPreservesSuperviewLayoutMargins:")) {
                 cell.preservesSuperviewLayoutMargins = false
             }
     }

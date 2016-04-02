@@ -36,7 +36,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
         // Set the window's tint color to the Moltin color
-        RidesClient.sharedInstance.configureClientID("Wzsftom7_G7l18wTT-asWUDzsyR3IlkG")
+        
+        //Uber Client
+//        RidesClient.sharedInstance.configureClientID("Wzsftom7_G7l18wTT-asWUDzsyR3IlkG")
         
         self.window?.tintColor = MOLTIN_COLOR
         

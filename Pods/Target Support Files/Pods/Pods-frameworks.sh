@@ -86,8 +86,6 @@ strip_invalid_archs() {
 if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "Pods/AFNetworking.framework"
   install_framework "Pods/AZDropdownMenu.framework"
-  install_framework "Pods/DGElasticPullToRefresh.framework"
-  install_framework "Pods/Eureka.framework"
   install_framework "Pods/Firebase.framework"
   install_framework "Pods/HexColors.framework"
   install_framework "Pods/Moltin.framework"
@@ -98,8 +96,6 @@ fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "Pods/AFNetworking.framework"
   install_framework "Pods/AZDropdownMenu.framework"
-  install_framework "Pods/DGElasticPullToRefresh.framework"
-  install_framework "Pods/Eureka.framework"
   install_framework "Pods/Firebase.framework"
   install_framework "Pods/HexColors.framework"
   install_framework "Pods/Moltin.framework"

@@ -11,7 +11,6 @@ import Moltin
 import SwiftSpinner
 import Firebase
 import AZDropdownMenu
-import Eureka
 
 
 class CollectionsViewController: UIViewController{
@@ -33,7 +32,7 @@ class CollectionsViewController: UIViewController{
         super.viewDidLoad()
         
         //AZDropdown
-        let rightButton = UIBarButtonItem(image: UIImage(named: "options"), style: .Plain, target: self, action: "showRightDropdown")
+        let rightButton = UIBarButtonItem(image: UIImage(named: "options"), style: .Plain, target: self, action: #selector(CollectionsViewController.showRightDropdown))
         navigationItem.rightBarButtonItem = rightButton
         rightMenu = buildDummyDefaultMenu()
         
@@ -113,35 +112,6 @@ class CollectionsViewController: UIViewController{
 
 }
 
-//
-class FieldRowCustomizationController : FormViewController {
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        form +++
-            Section(header: "Your Name", footer: "")
-            
-            <<< NameRow() {
-                $0.placeholder = "Name"
-                }
-                .cellSetup { cell, row in
-                    cell.imageView?.image = UIImage(named: "plus_image")
-                }
-            
-            +++ Section("Credit Card Number")
-            
-            <<< PhoneRow() { $0.placeholder = "eg: 4242424242424242" }
-            
-            +++ Section("Expiration Date")
-            <<< PhoneRow() { $0.placeholder = "Month: eg. 08" }
-            <<< PhoneRow() { $0.placeholder = "Year: eg. 2016" }
-            
-            +++ Section("CVV")
-            <<< PhoneRow() { $0.placeholder = "eg: 424" }
-    
-    }
-}
-
 
 //Table View source for CollectionsViewController
 extension CollectionsViewController: UITableViewDataSource{
@@ -190,13 +160,13 @@ extension CollectionsViewController: UITableViewDelegate{
         willDisplayCell cell: UITableViewCell,
         forRowAtIndexPath indexPath: NSIndexPath) {
             
-            if cell.respondsToSelector("setSeparatorInset:") {
+            if cell.respondsToSelector(Selector("setSeparatorInset:")) {
                 cell.separatorInset = UIEdgeInsetsZero
             }
-            if cell.respondsToSelector("setLayoutMargins:") {
+            if cell.respondsToSelector(Selector("setLayoutMargins:")) {
                 cell.layoutMargins = UIEdgeInsetsZero
             }
-            if cell.respondsToSelector("setPreservesSuperviewLayoutMargins:") {
+            if cell.respondsToSelector(Selector("setPreservesSuperviewLayoutMargins:")) {
                 cell.preservesSuperviewLayoutMargins = false
             }
     }
@@ -230,37 +200,24 @@ extension UIViewController {
                 }
                 //Code for the Profile Tab
                 if indexPath.row == 1{
-                    let controller2 = FieldRowCustomizationController()
+                    let controller2 = UIViewController()
                     controller2.title = ("Profile")
                     controller2.view.backgroundColor = UIColor.blackColor()
                     self?.navigationController!.pushViewController(controller2, animated:true)
                     
                     //Logout from firebase.
-                    let logoutButton = UIBarButtonItem(title: "Logout", style: UIBarButtonItemStyle.Plain, target: self, action: "logout")
+                    let logoutButton = UIBarButtonItem(title: "Logout", style: UIBarButtonItemStyle.Plain, target: self, action: #selector(CollectionsViewController.logout))
                     controller2.navigationItem.rightBarButtonItem = logoutButton
                     
                 }
                 
-                
-//            self?.pushNewViewController(leftTitles[indexPath.row])
             
         }
         
         return menu
     }
     
-//    private func pushNewViewController(title: String) {
-//        let newController = UIViewController()
-//        newController.title = title
-//        newController.view.backgroundColor = UIColor.whiteColor()
-//        dispatch_async(dispatch_get_main_queue(), {
-//            self.showViewController(newController, sender: self)
-//        })
-//    }
-//    
-//    private func pushNewViewController(item:AZDropdownMenuItemData) {
-//        self.pushNewViewController(item.title)
-//    }
+
     
     func dismiss(){
         self.dismissViewControllerAnimated(true, completion: nil)

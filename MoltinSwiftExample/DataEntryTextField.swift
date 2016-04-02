@@ -23,7 +23,7 @@ class DataEntryTextField: UITextField {
         
         let space = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.FlexibleSpace, target: self, action: nil)
         
-        let doneButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Done, target: self, action: "btnDoneTap:")
+        let doneButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Done, target: self, action: #selector(DataEntryTextField.btnDoneTap(_:)))
 
         
         toolbar.setItems([space, doneButton], animated: true)

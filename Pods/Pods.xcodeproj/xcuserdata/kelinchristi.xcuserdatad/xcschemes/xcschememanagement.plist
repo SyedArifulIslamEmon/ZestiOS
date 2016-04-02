@@ -19,16 +19,6 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>DGElasticPullToRefresh.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
-		<key>Eureka.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
 		<key>Firebase.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -67,22 +57,7 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>081A67E20EFAA0E2F7366DA7F47524EA</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>0D69847D9E31304D49F7C46C7217796C</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>115824B7CB2E76E5ACB836A251E79404</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>252FC2026226DD97E395E0E190BE3B22</key>
+		<key>27994E79009665D325525EC9D3CC4460</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -92,12 +67,17 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>40F580A48FF2C38CCBC58A6B3C8F5505</key>
+		<key>37758EFA272C17F191B678772C7B880F</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
 		<key>4878C70B21CA37D7CB8A476BF986741B</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>4CF9256EB8C4B573E6D187B740F2C8D6</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -112,12 +92,12 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>B7AC9326D819482593FE118E915409D7</key>
+		<key>8EFACA9714215830B7E8381C8A9BDCE3</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>C13B6BDD0039852F71D3D690E7064DB7</key>
+		<key>B7AC9326D819482593FE118E915409D7</key>
 		<dict>
 			<key>primary</key>
 			<true/>
