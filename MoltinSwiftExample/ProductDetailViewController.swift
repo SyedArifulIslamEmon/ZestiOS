@@ -86,11 +86,6 @@ class ProductDetailViewController: UIViewController, MKMapViewDelegate, CLLocati
                         let placemark = placemarks?[0]
                         let location = placemark?.location
                         self.coordinate = location?.coordinate
-//                        print("lat: \(self.coordinate!.latitude), long: \(self.coordinate!.longitude)")
-                        
-                        //Declared a constant that is able to leverage the CLLocationCoordinate2D to get the latitude and longitude co-ordinates
-                        //Declared another constant that instantiated the MKPointAnnotation that is responsible for the pin
-//                        let dest : CLLocationCoordinate2D = CLLocationCoordinate2DMake(self.coordinate!.latitude, self.coordinate!.longitude)
                         
                         
                         //////////////////////////
@@ -100,9 +95,6 @@ class ProductDetailViewController: UIViewController, MKMapViewDelegate, CLLocati
                         
                         // 2.
                         let destinationLocation = CLLocationCoordinate2D(latitude: self.coordinate!.latitude, longitude: self.coordinate.longitude)
-//                        let sourceLocation = CLLocationCoordinate2D(latitude: location!.coordinate.latitude, longitude: location!.coordinate.longitude)
-//                        print("latitude: \(location!.coordinate.latitude), longitude: \(location!.coordinate.longitude)")
-//                        let sourceLocation = CLLocationCoordinate2D(latitude: 47.619493, longitude: -122.196260)
                         
                         // 3.
 //                        let sourcePlacemark = MKPlacemark(coordinate: sourceLocation, addressDictionary: nil)

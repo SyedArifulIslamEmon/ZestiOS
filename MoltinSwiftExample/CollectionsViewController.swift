@@ -9,11 +9,10 @@
 import UIKit
 import Moltin
 import SwiftSpinner
-import Firebase
 import AZDropdownMenu
 
 
-class CollectionsViewController: UIViewController{
+class CollectionsViewController: UIViewController, UIPopoverPresentationControllerDelegate{
     
     var rightMenu: AZDropdownMenu?
     
@@ -34,7 +33,12 @@ class CollectionsViewController: UIViewController{
         //AZDropdown
         let rightButton = UIBarButtonItem(image: UIImage(named: "options"), style: .Plain, target: self, action: #selector(CollectionsViewController.showRightDropdown))
         navigationItem.rightBarButtonItem = rightButton
-        rightMenu = buildDummyDefaultMenu()
+        if false{
+         rightMenu = buildloggedInMenu()
+        }
+        else{
+            rightMenu = buildloggedOutMenu()
+        }
         
         // Do any additional setup after loading the view, typically from a nib.
         self.title = "Locales"
@@ -62,6 +66,10 @@ class CollectionsViewController: UIViewController{
         }
         
         
+    }
+    
+    func adaptivePresentationStyleForPresentationController(controller: UIPresentationController) -> UIModalPresentationStyle {
+        return UIModalPresentationStyle.None
     }
     
     //Dropdown function.
@@ -95,20 +103,6 @@ class CollectionsViewController: UIViewController{
         // Dispose of any resources that can be recreated.
     }
     
-    //Firebase Function.
-    func logout() {
-        // unauth() is the logout method for the current user.
-        
-        DataService.dataService.CURRENT_USER_REF.unauth()
-        
-        // Remove the user's uid from storage.
-        NSUserDefaults.standardUserDefaults().setValue(nil, forKey: "uid")
-        
-        // Head back to Login!
-        
-        let loginViewController = self.storyboard!.instantiateViewControllerWithIdentifier("Login")
-        UIApplication.sharedApplication().keyWindow?.rootViewController = loginViewController
-    }
 
 }
 
@@ -177,43 +171,69 @@ extension CollectionsViewController: UITableViewDelegate{
 extension UIViewController {
     
     //Creating Menu
-        private func buildDummyDefaultMenu() -> AZDropdownMenu {
-            
-            let leftTitles = ["Your Receipts", "Profile"]
-            let menu = AZDropdownMenu(titles: leftTitles)
+    private func buildloggedInMenu() -> AZDropdownMenu {
+        
+        let leftTitles = ["Your Receipts", "Profile", "Logout"]
+        let menu = AZDropdownMenu(titles: leftTitles)
 
-            menu.itemFontSize = 16.0
-            menu.itemColor = UIColor.blackColor()
-            menu.shouldDismissMenuOnDrag = true
-            menu.menuSeparatorColor = UIColor.clearColor()
-            menu.itemAlignment = .Right
-            menu.itemFontColor = MOLTIN_COLOR!
-            menu.itemFontName = "Helvetica"
-            menu.cellTapHandler = { [weak self] (indexPath: NSIndexPath) -> Void in
-                //Code for the Receipts Tab
-                if indexPath.row == 0{
-                    let controller = UIViewController()
-                    controller.title = ("Your Receipts")
-                    controller.view.backgroundColor = UIColor.whiteColor()
-                    self?.navigationController!.pushViewController(controller, animated:true)
-                    
-                }
-                //Code for the Profile Tab
-                if indexPath.row == 1{
-                    let controller2 = UIViewController()
-                    controller2.title = ("Profile")
-                    controller2.view.backgroundColor = UIColor.blackColor()
-                    self?.navigationController!.pushViewController(controller2, animated:true)
-                    
-                    //Logout from firebase.
-                    let logoutButton = UIBarButtonItem(title: "Logout", style: UIBarButtonItemStyle.Plain, target: self, action: #selector(CollectionsViewController.logout))
-                    controller2.navigationItem.rightBarButtonItem = logoutButton
-                    
-                }
+        menu.itemFontSize = 16.0
+        menu.itemColor = UIColor.blackColor()
+        menu.shouldDismissMenuOnDrag = true
+        menu.menuSeparatorColor = UIColor.clearColor()
+        menu.itemAlignment = .Right
+        menu.itemFontColor = MOLTIN_COLOR!
+        menu.itemFontName = "Helvetica"
+        menu.cellTapHandler = { [weak self] (indexPath: NSIndexPath) -> Void in
+            //Code for the Receipts Tab
+            if indexPath.row == 0{
+                let controller = UIViewController()
+                controller.title = ("Your Receipts")
+                controller.view.backgroundColor = UIColor.whiteColor()
+                self?.navigationController!.pushViewController(controller, animated:true)
                 
+            }
+            //Code for the Profile Tab
+            if indexPath.row == 1{
+                let controller2 = UIViewController()
+                controller2.title = ("Profile")
+                controller2.view.backgroundColor = UIColor.blackColor()
+                self?.navigationController!.pushViewController(controller2, animated:true)
+                
+            }
+
+        }
+        return menu
+    }
+    
+    private func buildloggedOutMenu() -> AZDropdownMenu {
+        let leftTitles = ["Login", "Register"]
+        let menu = AZDropdownMenu(titles: leftTitles)
+        
+        menu.itemFontSize = 16.0
+        menu.itemColor = UIColor.blackColor()
+        menu.shouldDismissMenuOnDrag = true
+        menu.menuSeparatorColor = UIColor.clearColor()
+        menu.itemAlignment = .Right
+        menu.itemFontColor = MOLTIN_COLOR!
+        menu.itemFontName = "Helvetica"
+        menu.cellTapHandler = { [weak self] (indexPath: NSIndexPath) -> Void in
+            //Code for the Receipts Tab
+            if indexPath.row == 0{
+                let controller4 = LoginViewController()
+                controller4.title = ("Login")
+                controller4.view.backgroundColor = UIColor.whiteColor()
+                self?.navigationController!.pushViewController(controller4, animated:true)
+                
+            }
+            if indexPath.row == 1{
+                let controller3 = LoginViewController()
+                controller3.registerNew = true
+                controller3.title = ("Register")
+                controller3.view.backgroundColor = UIColor.whiteColor()
+                self?.navigationController!.pushViewController(controller3, animated:true)
+            }
             
         }
-        
         return menu
     }
     

@@ -2,74 +2,103 @@
 //  LoginViewController.swift
 //  MoltinSwiftExample
 //
-//  Created by Kelin Christi on 3/2/16.
+//  Created by Kelin Christi on 4/2/16.
 //  Copyright © 2016 Moltin. All rights reserved.
 //
 
+import Foundation
 import UIKit
-import Firebase
+import Moltin
 
 class LoginViewController: UIViewController {
     
-    @IBOutlet weak var emailField: UITextField!
-    @IBOutlet weak var passwordField: UITextField!
-    
     override func viewDidLoad() {
         super.viewDidLoad()
+        setTextFields()
     }
     
-    override func viewDidAppear(animated: Bool) {
-        super.viewDidAppear(animated)
-        
-        // If we have the uid stored, the user is already logged in - no need to sign in again!
-        if NSUserDefaults.standardUserDefaults().valueForKey("uid") != nil && DataService.dataService.CURRENT_USER_REF.authData != nil {
-            self.performSegueWithIdentifier("CurrentlyLoggedIn", sender: nil)
-        }
-    }
+    var first_name: UITextField?
+    var last_name: UITextField?
+    var email: UITextField?
+    var registerNew = false
     
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-    }
-    
-    @IBAction func tryLogin(sender: AnyObject) {
+    func setTextFields() {
+        first_name = UITextField(frame: CGRectMake(0, 100, 420, 30))
+        first_name?.backgroundColor = MOLTIN_COLOR
+        first_name!.placeholder = "First Name"
         
-        let email = emailField.text
-        let password = passwordField.text
+        last_name = UITextField(frame: CGRectMake(0, 150, 420, 30))
+        last_name?.backgroundColor = MOLTIN_COLOR
+        last_name!.placeholder = "Last Name"
         
-        if email != "" && password != "" {
-            
-            // Login with the Firebase's authUser method
-            DataService.dataService.BASE_REF.authUser(email, password: password, withCompletionBlock: { error, authData in
-                
-                if error != nil {
-                    print(error)
-                    self.loginErrorAlert("Oops!", message: "Check your email and password.")
-                } else {
-                    
-                    // Be sure the correct uid is stored.
-                    
-                    NSUserDefaults.standardUserDefaults().setValue(authData.uid, forKey: "uid")
-                    
-                    // Enter the app!
-                    self.performSegueWithIdentifier("CurrentlyLoggedIn", sender: nil)
-                }
-            })
-            
+        email = UITextField(frame: CGRectMake(0, 200, 420, 30))
+        email?.backgroundColor = MOLTIN_COLOR
+        email!.placeholder = "E-mail"
+        
+        let loginButton = UIButton(type: .System) as UIButton
+        loginButton.frame = CGRectMake(100, 250, 100, 30)
+        loginButton.backgroundColor = UIColor.greenColor()
+        loginButton.setTitle("Login", forState: .Normal)
+        loginButton.addTarget(self, action: #selector(LoginViewController.login), forControlEvents: .TouchUpInside)
+        
+        let regButton = UIButton(type: .System) as UIButton
+        regButton.frame = CGRectMake(100, 250, 100, 30)
+        regButton.backgroundColor = UIColor.greenColor()
+        regButton.setTitle("Register", forState: .Normal)
+        regButton.addTarget(self, action: #selector(LoginViewController.register), forControlEvents: .TouchUpInside)
+        
+        if registerNew {
+            self.view.addSubview(first_name!)
+            self.view.addSubview(last_name!)
+
+            self.view.addSubview(regButton)
         } else {
-            
-            // There was a problem
-            loginErrorAlert("Oops!", message: "Don't forget to enter your email and password!")
+            self.view.addSubview(loginButton)
         }
+        self.view.addSubview(email!)
         
     }
     
-    func loginErrorAlert(title: String, message: String) {
+    
+    func login(){
+        //Method to create a user.
+        let params = [
+            "email": email!.text!,
+            "password": "Asdf1234"
+        ]
+        func success(incoming: [NSObject : AnyObject]!) -> Void{
+            print("Success: \(incoming)");
+        }
         
-        // Called upon login error to let the user know login didn't work
-        let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.Alert)
-        let action = UIAlertAction(title: "Ok", style: .Default, handler: nil)
-        alert.addAction(action)
-        presentViewController(alert, animated: true, completion: nil)
+        func failure(incoming: [NSObject: AnyObject]!, error: NSError!) -> Void{
+            print("Failure: \(incoming)");
+        }
+//        Moltin.sharedInstance().customer.findWithParameters(params, success: success, failure: failure)
+        Moltin.sharedInstance().customer.getWithEndpoint("customers/authenticate", andParameters:params, success: success, failure: failure)
+        
+//        print("Login test \(email!.text)")
+    }
+    func register() {
+        
+        //Method to create a user.
+        let params = [
+            "first_name": first_name!.text!,
+            "last_name": last_name!.text!,
+            "email": email!.text!,
+            "password": "Asdf1234"
+        ]
+        func success(incoming: [NSObject : AnyObject]!) -> Void{
+            print("Success: \(incoming)");
+        }
+        
+        func failure(incoming: [NSObject: AnyObject]!, error: NSError!) -> Void{
+            print("Failure: \(incoming)");
+        }
+        Moltin.sharedInstance().customer.postWithEndpoint("customers", andParameters: params, success: success, failure: failure)
+//        Moltin.sharedInstance().customer.createWithParameters(params, success: success, failure: failure)
+
     }
     
 }
+
+

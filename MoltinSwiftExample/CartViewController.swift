@@ -32,7 +32,6 @@ class CartViewController: UIViewController, UITableViewDelegate, UITableViewData
 
         totalLabel?.text = ""
         
-        
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -55,7 +54,7 @@ class CartViewController: UIViewController, UITableViewDelegate, UITableViewData
             // Got cart contents succesfully!
             // Set local var's
             self.cartData = response
-            //print(self.cartData)
+            print(self.cartData)
             
             //The cart products
             self.cartProducts = self.cartData?.valueForKeyPath("result.contents") as? NSDictionary

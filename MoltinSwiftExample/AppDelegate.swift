@@ -14,7 +14,6 @@ import HexColors
 
 // Declare some global constants to make them easily accessible in other classes.
 
-let BASE_URL = "https://zest-kelin-christi.firebaseio.com"
 
 let MOLTIN_STORE_ID = "aqA2mV2YKWpmu4daVS7Fh2WbWLH0xe1f2i9hHrkR"
 
