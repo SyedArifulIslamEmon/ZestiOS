@@ -1,16 +1,18 @@
 {
-    "name": "employeeService",
-    "version": "0.0.1",
-    "private": true,
-    "dependencies": {
-        "express": "3.1.0",
-        "mongoose": "latest"
-    },
-    "engines": {
-        "node": "4.3.0",
-        "npm": "2.1.x"
-    },
-    "scripts": {
-        "start": "node app.js"
-    }
+  "name": "employeeService",
+  "version": "0.0.1",
+  "private": true,
+  "dependencies": {
+    "express": "3.1.0",
+    "moltin": "^1.0.0",
+    "mongoose": "latest",
+    "request": "^2.69.0"
+  },
+  "engines": {
+    "node": "4.3.0",
+    "npm": "2.1.x"
+  },
+  "scripts": {
+    "start": "node app.js"
+  }
 }
