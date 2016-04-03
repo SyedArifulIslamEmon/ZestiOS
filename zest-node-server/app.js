@@ -19,25 +19,16 @@ var request = require('request');
 var moltin = require('moltin')({
     publicId: 'aqA2mV2YKWpmu4daVS7Fh2WbWLH0xe1f2i9hHrkR',
     secretKey: 'pTpw0mvDSyOpCw4HyZbPUFqxA441xRC5gYrSRbfj',
-})
+});
 
 moltin.Authenticate(function() {
-        request({
-                uri: "https://api.molt.in/v1/customers/authenticate/",
-                method: "POST",
-                form: {
-                    "email": "andy.roddick@gmail.com",
-                    "password": "Asdf1234"
-                }
-            },
-
-            function(error, response, body) {
-                console.log(body);
-            });
-    },
-    function() {
-        console.log('auth failed:', arguments);
+    console.log("Authenticated");
+    moltin.Customer.Find({ "email": "andy.roddick@gmail.com" }, function (customer) {
+        console.log("Found Customer:", customer);
+    }, function (err) {
+        console.log("Error:", err);
     });
+});
 
 
 app.configure(function() {
